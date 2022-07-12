@@ -8,20 +8,15 @@ ml5 Example
 This example uses a callback pattern to create the classifier
 === */
 
-const stageshift = new Event("Stageshift")
 // Enum classame states
-class Stages extends EventTarget{
+class Stages {
   static None = new Stages("None");
   static Start = new Stages("Start");
   static Choosing = new Stages("Choosing");
   static End = new Stages("End");
 
   constructor(state) {
-    super()
     this.state = state;
-    this.addEventListener("Stageshift", () => {
-      console.debug("Stage shifted to: " + STAGE)
-    })
   }
 
   toString(){
@@ -31,29 +26,50 @@ class Stages extends EventTarget{
 
 const VIDEOHEIGHT = 500;
 
-class Countdown {
-  constructor() {
-    self.count = 0
-  }
-
-  startCountdown() {
+count = 0
+function countToThree(callback) {
+    count = 0
     let timer = setInterval(function () {
-      textSize(20)
-      if (self.count > 3) {
-        STAGE = Stages.Start
+      if (count >= 5) {
+        callback()
         clearInterval(timer)
+      } else {
+        count++
       }
-      sels++;
     }, 1000)
-  }
 }
 
 let STAGE = Stages.None
 prev = STAGE
 function updateStageChange() {
   if (prev != STAGE){
-    STAGE.dispatchEvent(stageshift)
+    stageChanges(STAGE)
     prev = STAGE
+  }
+}
+
+// Like draw_stage but gets only executed when state changes
+function stageChanges(stage){
+  console.log("Stage changed!")
+  switch (stage) {
+    case Stages.Start:
+      setTimeout(() => {
+       STAGE = Stages.Choosing 
+      }, 5000); 
+      break;
+    case Stages.Choosing:
+      classifyVideo()
+      countToThree(() => {
+        STAGE = Stages.End
+      })  
+      break;
+    case Stages.End:
+      classifyVideo()      
+      break;
+
+  
+    default:
+      break;
   }
 }
 
@@ -65,14 +81,18 @@ function draw_stage(stage) {
     case Stages.None:
       break;
     case Stages.Start:
+      background(255)
       textAlign(CENTER)
       fill(0)
       text("Starting Game!", ratio * VIDEOHEIGHT / 2, VIDEOHEIGHT / 2)
       break;
     case Stages.Choosing:
+      image(video, 0, 0, ratio * VIDEOHEIGHT, VIDEOHEIGHT)
       textAlign(CENTER)
       fill(0)
-      text(count)
+      text(count, ratio * VIDEOHEIGHT / 2, VIDEOHEIGHT / 2)
+      break;
+    case Stages.End:
       break;
     default:
 
@@ -83,7 +103,6 @@ function draw_stage(stage) {
 function modelReady() {
   console.log('Model Ready');
   STAGE = Stages.Start
-  classifyVideo();
 }
 
 // Get a prediction for the current video frame
@@ -94,8 +113,9 @@ function classifyVideo() {
 // When we get a result
 function gotResult(err, results) {
   resultss = results
+  console.log(results)
   //TODO: handle relusts with enums
-  if (!err ) {
+  if (!err && STAGE == Stages.Choosing) {
       classifyVideo();
   }
 }
@@ -135,8 +155,6 @@ function draw() {
     ratio = video.width / video.height
     resizeCanvas(ratio * VIDEOHEIGHT, VIDEOHEIGHT)
   }
-  background(255)
-  image(video, 0, 0, ratio * VIDEOHEIGHT, VIDEOHEIGHT)
   updateStageChange()
   draw_stage(STAGE)
 }
