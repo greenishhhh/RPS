@@ -13,6 +13,7 @@ class Stages {
   static None = new Stages("None");
   static Start = new Stages("Start");
   static Choosing = new Stages("Choosing");
+  static Result = new Stages("Result");
   static End = new Stages("End");
 
   constructor(state) {
@@ -22,6 +23,12 @@ class Stages {
   toString(){
     return this.state
   }
+}
+
+const STAGE = {
+  _stage : Stages.None,
+  set current(stage){stageChanges(stage); this._stage = stage},
+  get current() {return this._stage}
 }
 
 const VIDEOHEIGHT = 500;
@@ -39,32 +46,41 @@ function countToThree(callback) {
     }, 1000)
 }
 
-let STAGE = Stages.None
-prev = STAGE
-function updateStageChange() {
-  if (prev != STAGE){
-    stageChanges(STAGE)
-    prev = STAGE
-  }
-}
+//// Call only when there was an update to STAGE
+//prev = STAGE
+//function updateStageChange() {
+//  if (prev != STAGE){
+//    stageChanges(STAGE)
+//    prev = STAGE
+//  }
+//}
 
 // Like draw_stage but gets only executed when state changes
 function stageChanges(stage){
-  console.log("Stage changed!")
   switch (stage) {
     case Stages.Start:
       setTimeout(() => {
-       STAGE = Stages.Choosing 
+       STAGE.current = Stages.Choosing 
       }, 5000); 
       break;
     case Stages.Choosing:
       classifyVideo()
       countToThree(() => {
-        STAGE = Stages.End
+        STAGE.current = Stages.Result
       })  
       break;
+    case Stages.Result:
+      classifyVideo()
+      setTimeout(() => {
+        STAGE.current = Stages.End
+      }, 5000);
+      break;
+
     case Stages.End:
-      classifyVideo()      
+
+      setTimeout(() => {
+        STAGE.current = Stages.Start
+      }, 5000);
       break;
 
   
@@ -92,7 +108,11 @@ function draw_stage(stage) {
       fill(0)
       text(count, ratio * VIDEOHEIGHT / 2, VIDEOHEIGHT / 2)
       break;
-    case Stages.End:
+    case Stages.Result:
+      background(255)
+      textAlign(CENTER)
+      fill(0)
+      text("Computing", ratio * VIDEOHEIGHT / 2, VIDEOHEIGHT / 2)
       break;
     default:
 
@@ -102,7 +122,7 @@ function draw_stage(stage) {
 
 function modelReady() {
   console.log('Model Ready');
-  STAGE = Stages.Start
+  STAGE.current = Stages.Start
 }
 
 // Get a prediction for the current video frame
@@ -112,10 +132,10 @@ function classifyVideo() {
 
 // When we get a result
 function gotResult(err, results) {
+  console.log("Got some results on stage: " + STAGE.current)
   resultss = results
-  console.log(results)
   //TODO: handle relusts with enums
-  if (!err && STAGE == Stages.Choosing) {
+  if (!err && STAGE.current == Stages.Choosing) {
       classifyVideo();
   }
 }
@@ -155,6 +175,5 @@ function draw() {
     ratio = video.width / video.height
     resizeCanvas(ratio * VIDEOHEIGHT, VIDEOHEIGHT)
   }
-  updateStageChange()
-  draw_stage(STAGE)
+  draw_stage(STAGE.current)
 }
