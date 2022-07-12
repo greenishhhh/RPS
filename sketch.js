@@ -8,15 +8,24 @@ ml5 Example
 This example uses a callback pattern to create the classifier
 === */
 
-// Enum class Stages to manage game states
-class Stages {
+const stageshift = new Event("Stageshift")
+// Enum classame states
+class Stages extends EventTarget{
   static None = new Stages("None");
   static Start = new Stages("Start");
   static Choosing = new Stages("Choosing");
   static End = new Stages("End");
 
   constructor(state) {
+    super()
     this.state = state;
+    this.addEventListener("Stageshift", () => {
+      console.debug("Stage shifted to: " + STAGE)
+    })
+  }
+
+  toString(){
+    return this.state
   }
 }
 
@@ -34,15 +43,17 @@ class Countdown {
         STAGE = Stages.Start
         clearInterval(timer)
       }
-      self.count++;
+      sels++;
     }, 1000)
   }
 }
 
+let STAGE = Stages.None
 prev = STAGE
-function stageChangeEvent(callback) {
+function updateStageChange() {
   if (prev != STAGE){
-    callback()
+    STAGE.dispatchEvent(stageshift)
+    prev = STAGE
   }
 }
 
@@ -71,9 +82,7 @@ function draw_stage(stage) {
 
 function modelReady() {
   console.log('Model Ready');
-  setTimeout(() => {
-    startCountdown();
-  }, 3000);
+  STAGE = Stages.Start
   classifyVideo();
 }
 
@@ -86,7 +95,7 @@ function classifyVideo() {
 function gotResult(err, results) {
   resultss = results
   //TODO: handle relusts with enums
-  if (!err) {
+  if (!err ) {
       classifyVideo();
   }
 }
@@ -96,8 +105,6 @@ let ratio
 
 let classifier
 let video
-// Switching between different game stanges to determen what to do
-let STAGE = Stages.None
 
 
 let resultss = {
@@ -130,5 +137,6 @@ function draw() {
   }
   background(255)
   image(video, 0, 0, ratio * VIDEOHEIGHT, VIDEOHEIGHT)
+  updateStageChange()
   draw_stage(STAGE)
 }
