@@ -9,6 +9,7 @@ This example uses a callback pattern to create the classifier
 === */
 
 const VIDEOHEIGHT = 500;
+error = false
 
 
 class Choice{
@@ -110,8 +111,10 @@ class Game {
         return `${this.two.name} gewinnt\n${this.two.choice} gegen ${this.one.choice}`
 
       default:
-        return "Fehler, bitte gucke in die Logs"
-    }
+        error = "Fehler, bitte gucke in die Logs"
+ 
+        return error
+      }
   }
 }
 
@@ -156,6 +159,10 @@ function countToThree(callback) {
 // You could make this "case hell" more prettie with class patterns  
 // Like draw_stage but gets only executed when state changes
 function stageChanges(stage, game){
+  if (error){
+    console.error("Wont continue due to error")
+    return
+  }
   switch (stage) {
     case Stages.Start:
       setTimeout(() => {
@@ -235,7 +242,9 @@ function classifyVideo() {
 function gotResult(err, results) {
   resultss = results
   //TODO: handle relusts with enums
-  if (!err && STAGE.current == Stages.Choosing) {
+  if (err){
+    error = err
+  } else if (STAGE.current == Stages.Choosing) {
       classifyVideo();
   }
 }
