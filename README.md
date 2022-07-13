@@ -1,6 +1,8 @@
 # RPS
 Schere Stein Papier Spiel mit ML5 und [Tailwind](https://tailwindcss.com/)
 
+![example](example/example.gif)
+
 ## Getting started
 Um die Website nutzen zu können lade dir das Repo herunter:
 
