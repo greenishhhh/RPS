@@ -104,10 +104,10 @@ class Game {
         return `Unentschieden mit\n${this.one.choice}`
       
       case 1: 
-        return `Spieler 1 gewinnt\n${this.one.choice} gegen ${this.two.choice}`
+        return `${this.one.name} gewinnt\n${this.one.choice} gegen ${this.two.choice}`
 
       case 2:
-        return `Spieler 2 gewinnt\n${this.two.choice} gegen ${this.one.choice}`
+        return `${this.two.name} gewinnt\n${this.two.choice} gegen ${this.one.choice}`
 
       default:
         return "Fehler, bitte gucke in die Logs"
