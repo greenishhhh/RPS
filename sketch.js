@@ -278,7 +278,7 @@ function setup() {
   canvas.parent('video');
 
   // Initialize the Image Classifier method with MobileNet and the video as the second argument
-  classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models/DFUUqCkHR/", video, modelReady);
+  classifier = ml5.imageClassifier("model.json", video, modelReady);
 }
 
 function draw() {
