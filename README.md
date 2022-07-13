@@ -1,4 +1,4 @@
-# RPS
+# Rock Paper Scissors
 Schere Stein Papier Spiel mit ML5 und [Tailwind](https://tailwindcss.com/)
 
 ![example](example/example.gif)
