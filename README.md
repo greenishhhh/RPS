@@ -20,3 +20,9 @@ python -m http.server
 ```
 
 Die Website ist jetzt unter http://localhost:8000 zu finden.
+
+## Custom Model laden
+Konvertiere dein Model zu Tensorflow.js mit 
+TBA
+
+Editiere in der **model.json** `functional` zu `Model` siehe [hier](https://stackoverflow.com/questions/63143849/tensorflow-js-error-unknown-layer-functional)
