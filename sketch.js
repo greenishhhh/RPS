@@ -8,6 +8,9 @@ ml5 Example
 This example uses a callback pattern to create the classifier
 === */
 
+const VIDEOHEIGHT = 500;
+
+
 class Choice{
   static Stein = new Choice("Stein")
   static Schere = new Choice("Schere")
@@ -136,7 +139,6 @@ const STAGE = {
   get current() {return this._stage}
 }
 
-const VIDEOHEIGHT = 500;
 
 count = 0
 function countToThree(callback) {
@@ -231,7 +233,6 @@ function classifyVideo() {
 
 // When we get a result
 function gotResult(err, results) {
-  console.log("Got some results on stage: " + STAGE.current)
   resultss = results
   //TODO: handle relusts with enums
   if (!err && STAGE.current == Stages.Choosing) {
@@ -247,8 +248,7 @@ let video
 
 let game
 
-
-let resultss = {
+let resultss = { // TODO Fix ugly
   0: { label: "", confidence: 0 },
   1: { label: "", confidence: 0 },
   2: { label: "", confidence: 0 },
