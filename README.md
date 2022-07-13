@@ -7,8 +7,8 @@ Um die Website nutzen zu können lade dir das Repo herunter:
 ```sh 
 git clone greenishhhh/RPS
 cd RPS
-npm install # Downloade dependencies
-make watch # Um die CSS zu generieren. Nutzt den Tailwind client und bleibt aktive um änderungen zu übernhemen.
+npm install # Downloade Tailwind dependencies, braucht man nicht wenn css nicht verändert werden soll
+make 
 ```
 
 Webcamzugriff wird gernerell **nur über https** oder **localhost** erlaubt. Es reicht **nicht** einfach die HTML im Webbroswer zu öffnen.
