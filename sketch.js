@@ -129,6 +129,7 @@ class Stages {
   }
 }
 
+// defined set function for STAGE.current, call stageChanges on every stage change
 const STAGE = {
   _stage : Stages.None,
   set current(stage) { this._stage = stage; stageChanges(stage, game);},
@@ -150,14 +151,6 @@ function countToThree(callback) {
     }, 1000)
 }
 
-//// Call only when there was an update to STAGE
-//prev = STAGE
-//function updateStageChange() {
-//  if (prev != STAGE){
-//    stageChanges(STAGE)
-//    prev = STAGE
-//  }
-//}
 // You could make this "case hell" more prettie with class patterns  
 // Like draw_stage but gets only executed when state changes
 function stageChanges(stage, game){
@@ -268,6 +261,7 @@ function setup() {
   ratio = video.width / video.height
 
   game = new Game();
+
 
   var canvas = createCanvas(VIDEOHEIGHT * ratio, VIDEOHEIGHT);
 
