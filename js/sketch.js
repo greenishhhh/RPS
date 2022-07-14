@@ -36,11 +36,15 @@ class Choice{
 
   static fromString(label){
     switch (label.toLowerCase()) {
-      case "schere", "scissors":
+      case "schere":
+      case "scissors":
         return Choice.Schere
-      case "stein", "stone", "rock":
+      case "stein":
+      case "stone":
+      case "rock":
         return Choice.Stein
-      case "papier", "paper":
+      case "papier":
+      case "paper":
         return Choice.Papier
       default:
         throw `Cant match string to choice ${label.toLowerCase()}`
@@ -172,7 +176,7 @@ function stageChanges(stage, game){
     case Stages.Choosing:
       classifyVideo()
       countToThree(() => {
-        STAGE.current = Stages.Result
+        //STAGE.current = Stages.Result
       })  
       break;
     case Stages.Result:
@@ -241,6 +245,7 @@ function classifyVideo() {
 // When we get a result
 function gotResult(err, results) {
   resultss = results
+  console.table(results)
   //TODO: handle relusts with enums
   if (err){
     error = err
