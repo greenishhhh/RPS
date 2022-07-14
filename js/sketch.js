@@ -240,6 +240,7 @@ function classifyVideo() {
 
 // When we get a result
 function gotResult(err, results) {
+  console.table(results)
   resultss = results
   //TODO: handle relusts with enums
   if (err){
