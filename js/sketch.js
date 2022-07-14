@@ -37,7 +37,7 @@ class Choice{
   static fromString(label){
     switch (label.toLowerCase()) {
       case "schere", "scissors":
-        return Choice.Schere;
+        return Choice.Schere
       case "stein", "stone", "rock":
         return Choice.Stein
       case "papier", "paper":
