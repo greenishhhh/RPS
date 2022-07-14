@@ -176,7 +176,7 @@ function stageChanges(stage, game){
     case Stages.Choosing:
       classifyVideo()
       countToThree(() => {
-        //STAGE.current = Stages.Result
+        STAGE.current = Stages.Result
       })  
       break;
     case Stages.Result:
