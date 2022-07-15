@@ -243,7 +243,6 @@ function classifyVideo() {
 // When we get a result
 function gotResult(err, results) {
   resultss = results
-  console.table(results)
   //TODO: handle relusts with enums
   if (err){
     error = err
@@ -265,6 +264,8 @@ let resultss = { // TODO Fix ugly
   1: { label: "", confidence: 0 },
   2: { label: "", confidence: 0 },
 }
+
+debug = false
 
 function setup() {
   // Create a camera input
@@ -291,4 +292,8 @@ function draw() {
     resizeCanvas(ratio * VIDEOHEIGHT, VIDEOHEIGHT)
   }
   draw_stage(STAGE.current, game)
+
+  if (debug){
+   console.table(resultss)
+  }
 }
