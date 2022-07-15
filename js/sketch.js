@@ -185,16 +185,14 @@ function stageChanges(stage, game){
       game.calcComputerMove()
       setTimeout(() => {
         STAGE.current = Stages.End
-      }, 5000);
+      }, 1000);
       break;
 
     case Stages.End:
       setTimeout(() => {
         STAGE.current = Stages.Choosing
-      }, 5000);
+      }, 1000);
       break;
-
-  
     default:
       break;
   }
@@ -283,7 +281,7 @@ function setup() {
   canvas.parent('video');
 
   // Initialize the Image Classifier method with MobileNet and the video as the second argument
-  classifier = ml5.imageClassifier("model/model.json", video, modelReady);
+  classifier = ml5.imageClassifier("model/layer/model.json", video, modelReady);
 }
 
 function draw() {
